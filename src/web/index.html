@@ -4,93 +4,520 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="FirstCommit turns any public GitHub repository into a practical contributor roadmap.">
-  <title>FirstCommit — Find your way into open source</title>
+  <title>FirstCommit — Make your way into open source</title>
   <style>
-    :root{--ink:#102a43;--muted:#627d98;--line:#d9e2ec;--paper:#f7fafc;--card:#fff;--blue:#1769e0;--blue-dark:#0f4eb2;--green:#087f5b}
-    *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}button,input,select{font:inherit}button{cursor:pointer}.shell{width:min(1180px,calc(100% - 40px));margin:auto}
-    header{padding:24px 0;display:flex;align-items:center;justify-content:space-between}.brand{color:var(--ink);text-decoration:none;font-weight:850;letter-spacing:-.04em;font-size:1.35rem}.brand span{color:var(--blue)}.badge{color:var(--muted);font-size:.82rem}
-    .hero{padding:64px 0 42px;display:grid;grid-template-columns:1fr .9fr;gap:64px;align-items:center}.eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;font-weight:800}h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.07em;margin:14px 0 24px;max-width:680px}.hero p{color:var(--muted);font-size:1.14rem;max-width:570px}
-    .scan-card,.panel,.stat{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 15px 50px rgba(16,42,67,.07)}.scan-card{padding:28px}.scan-card h2{margin:0 0 7px;letter-spacing:-.03em}.scan-card .hint{color:var(--muted);font-size:.89rem;margin:0 0 24px}
-    label{display:block;color:var(--muted);font-weight:700;font-size:.78rem;margin:15px 0 7px}input,select{width:100%;border:1px solid #bcccdc;border-radius:10px;padding:12px 13px;color:var(--ink);background:#fff;outline:none}input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,105,224,.12)}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.primary{background:var(--blue);border:0;color:#fff;border-radius:10px;padding:13px 18px;font-weight:800;margin-top:20px;width:100%}.primary:hover{background:var(--blue-dark)}.primary:disabled{opacity:.6;cursor:wait}.error{color:#ba2525;font-size:.9rem;margin:12px 0 0}
-    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:16px 0 62px}.feature{padding:20px 4px;border-top:2px solid var(--line)}.feature b{display:block;margin-bottom:4px}.feature span{color:var(--muted);font-size:.9rem}
-    #results{padding:10px 0 80px}.results-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:22px 0}.results-head h2{font-size:2rem;letter-spacing:-.05em;margin:0}.results-head p{color:var(--muted);margin:3px 0 0}.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:9px 13px;font-weight:700}
-    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.panel{padding:24px}.panel h3{margin:0 0 14px;letter-spacing:-.03em}.overview{grid-column:1/-1;display:grid;grid-template-columns:1.45fr repeat(3,1fr);gap:20px;align-items:center}.summary{font-size:1.14rem;margin:0}.plain{color:var(--muted);margin:8px 0 0;font-size:.94rem}.stat{box-shadow:none;padding:16px;min-height:100px}.stat small{display:block;color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.09em;font-weight:800}.stat strong{display:block;font-size:1.15rem;margin-top:8px}.score{color:var(--green);font-size:2.2rem!important;letter-spacing:-.07em}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;border-radius:99px;background:#e6f6f1;color:var(--green);padding:4px 9px;font-size:.76rem;font-weight:800}
-    .architecture{display:flex;flex-wrap:wrap;gap:10px}.area{flex:1 1 130px;background:#f0f4f8;padding:15px;border-radius:12px}.area b{display:block}.area span{color:var(--muted);font-size:.82rem}.reading{list-style:none;padding:0;margin:0;counter-reset:read}.reading li{counter-increment:read;border-bottom:1px solid var(--line);padding:12px 0 12px 36px;position:relative;font-weight:700}.reading li:before{content:counter(read,decimal-leading-zero);position:absolute;left:0;color:var(--blue);font-size:.8rem}.file-reason{display:block;color:var(--muted);font-size:.8rem;font-weight:400}
-    .issue{border:1px solid var(--line);border-radius:13px;padding:16px;margin-bottom:10px}.issue:last-child{margin-bottom:0}.issue a{color:var(--ink);font-weight:800;text-decoration:none}.issue a:hover{color:var(--blue)}.issue-meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.issue-meta span{color:var(--muted);font-size:.75rem;background:#f0f4f8;border-radius:5px;padding:3px 6px}.issue p{color:var(--muted);font-size:.85rem;margin:7px 0 0}
-    .roadmap{margin:0;padding:0;list-style:none}.roadmap li{padding:13px 0 13px 35px;position:relative;border-left:2px solid #b8d3ff;margin-left:8px}.roadmap li:before{content:"";width:12px;height:12px;background:var(--blue);border:3px solid var(--paper);border-radius:50%;position:absolute;left:-8px;top:18px;box-shadow:0 0 0 1px var(--blue)}.learning{padding-left:20px;color:var(--muted)}.learning li{margin:8px 0}.ask{display:flex;gap:9px;margin-top:15px}.ask input{flex:1}.ask button{border:0;background:var(--ink);color:#fff;border-radius:9px;padding:0 15px;font-weight:800}.answer{margin-top:14px;color:var(--muted);white-space:pre-wrap}.loading{color:var(--muted);padding:30px 0}footer{color:var(--muted);padding:30px 0 50px;font-size:.85rem}
-    @media(max-width:850px){.hero,.grid{grid-template-columns:1fr;gap:24px}.overview{grid-template-columns:1fr 1fr}.overview .summary-block{grid-column:1/-1}.features{grid-template-columns:1fr 1fr}}@media(max-width:520px){.shell{width:min(100% - 28px,1180px)}.hero{padding-top:35px}.overview{grid-template-columns:1fr}.features,.row{grid-template-columns:1fr}.results-head{align-items:start;flex-direction:column}.ask{flex-direction:column}.ask button{padding:11px}}
+    :root {
+      --ink: #131920;
+      --night: #11171d;
+      --night-2: #1a232c;
+      --paper: #f3f0ea;
+      --paper-2: #ebe7df;
+      --white: #fffdf9;
+      --muted: #6d767d;
+      --muted-dark: #a4afb5;
+      --line: #d8d5cf;
+      --line-dark: #34414b;
+      --lime: #c6ef72;
+      --lime-dark: #96c546;
+      --coral: #ff785e;
+      --blue: #91c8ff;
+      --shadow: 0 26px 70px rgba(25, 32, 38, .12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .shell { width: min(1240px, calc(100% - 56px)); margin: 0 auto; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-size: 1.22rem;
+      font-weight: 900;
+      letter-spacing: -.06em;
+    }
+    .brand-mark {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 9px;
+      color: var(--ink);
+      background: var(--lime);
+      font-size: .72rem;
+      letter-spacing: -.04em;
+    }
+    .brand span { color: var(--blue); }
+    .nav { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: .88rem; }
+    .nav a { text-decoration: none; }
+    .nav a:hover { color: var(--ink); }
+    .nav-cta {
+      padding: 9px 14px;
+      color: var(--ink) !important;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      font-weight: 750;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(390px, .8fr);
+      gap: clamp(40px, 7vw, 100px);
+      align-items: center;
+      padding: 88px 0 92px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #567e16;
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .eyebrow:before {
+      width: 7px;
+      height: 7px;
+      content: "";
+      background: var(--coral);
+      border-radius: 50%;
+    }
+    h1 {
+      max-width: 700px;
+      margin: 18px 0 24px;
+      font-size: clamp(3.5rem, 7vw, 6.8rem);
+      line-height: .91;
+      letter-spacing: -.085em;
+      font-weight: 850;
+    }
+    h1 em { color: var(--coral); font-style: normal; }
+    .hero-copy {
+      max-width: 570px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.7vw, 1.18rem);
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 18px; margin-top: 34px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 800;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-dark { color: var(--white); background: var(--night); }
+    .button-dark:hover { background: #26323b; }
+    .button-link { padding: 0; color: var(--ink); border: 0; border-bottom: 1px solid var(--ink); border-radius: 0; }
+    .hero-note { display: flex; align-items: center; gap: 12px; margin-top: 42px; color: var(--muted); font-size: .82rem; }
+    .avatar-stack { display: flex; padding-left: 7px; }
+    .avatar-stack i { display: grid; width: 25px; height: 25px; place-items: center; margin-left: -7px; border: 2px solid var(--paper); border-radius: 50%; color: var(--ink); background: var(--lime); font-size: .58rem; font-style: normal; font-weight: 900; }
+    .avatar-stack i:nth-child(2) { background: var(--coral); }
+    .avatar-stack i:nth-child(3) { background: var(--blue); }
+
+    .composer {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      color: var(--white);
+      background: var(--night);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+    .composer:after {
+      position: absolute;
+      top: -100px;
+      right: -90px;
+      width: 250px;
+      height: 250px;
+      content: "";
+      border: 1px solid rgba(198, 239, 114, .26);
+      border-radius: 50%;
+      box-shadow: 0 0 0 30px rgba(198, 239, 114, .04), 0 0 0 60px rgba(198, 239, 114, .03);
+    }
+    .composer-head { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 34px; }
+    .composer-kicker { color: var(--lime); font-size: .68rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .composer h2 { max-width: 250px; margin: 8px 0 0; font-size: 1.7rem; line-height: 1.05; letter-spacing: -.055em; }
+    .step-count { color: var(--muted-dark); font-size: .76rem; font-weight: 700; }
+    .step-count strong { color: var(--lime); }
+    .field { position: relative; z-index: 1; margin-top: 18px; }
+    .field label { display: block; margin: 0 0 8px; color: var(--muted-dark); font-size: .72rem; font-weight: 750; }
+    .composer input, .composer select {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      color: var(--white);
+      background: var(--night-2);
+      border: 1px solid var(--line-dark);
+      border-radius: 8px;
+      outline: 0;
+    }
+    .composer input::placeholder { color: #68747d; }
+    .composer input:focus, .composer select:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(198, 239, 114, .12); }
+    .composer select { color: var(--white); }
+    .composer select option { color: var(--ink); background: var(--white); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .composer-submit {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 50px;
+      margin-top: 25px;
+      color: var(--ink);
+      background: var(--lime);
+      border: 0;
+      border-radius: 8px;
+      font-weight: 850;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .composer-submit:hover { background: #d4f794; transform: translateY(-2px); }
+    .composer-submit:disabled { cursor: wait; opacity: .7; transform: none; }
+    .form-error { position: relative; z-index: 1; margin: 11px 0 0; color: #ffab9a; font-size: .8rem; }
+    .microcopy { position: relative; z-index: 1; margin: 13px 0 0; color: #77838a; font-size: .72rem; text-align: center; }
+
+    .manifesto {
+      display: grid;
+      grid-template-columns: 1.1fr repeat(3, 1fr);
+      gap: 22px;
+      padding: 25px 0 27px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .manifesto-intro { color: var(--muted); font-size: .82rem; }
+    .manifesto-intro strong { display: block; margin-bottom: 5px; color: var(--ink); font-size: 1rem; }
+    .manifesto-item { display: flex; gap: 12px; }
+    .manifesto-number { color: var(--coral); font-size: .73rem; font-weight: 850; }
+    .manifesto-item strong { display: block; font-size: .86rem; }
+    .manifesto-item span { display: block; margin-top: 3px; color: var(--muted); font-size: .76rem; }
+
+    #results { padding: 88px 0 100px; }
+    .results-shell { padding-top: 3px; }
+    .workspace-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .workspace-top h2 { max-width: 650px; margin: 10px 0 5px; font-size: clamp(2.2rem, 5vw, 4.3rem); line-height: .93; letter-spacing: -.08em; }
+    .workspace-top p { margin: 0; color: var(--muted); font-size: .87rem; }
+    .workspace-top p a { color: var(--ink); font-weight: 750; }
+    .new-scan { color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; font-weight: 750; }
+    .new-scan:hover { border-color: var(--ink); }
+    .workspace-nav { display: flex; gap: 7px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+    .workspace-nav a { flex: none; padding: 7px 11px; color: var(--muted); border-radius: 6px; text-decoration: none; font-size: .78rem; font-weight: 750; }
+    .workspace-nav a:hover { color: var(--ink); background: var(--paper-2); }
+
+    .readiness {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 22px 25px;
+      color: var(--white);
+      background: var(--night);
+      border-radius: 15px;
+    }
+    .readiness-score { color: var(--lime); font-size: 2.8rem; line-height: 1; letter-spacing: -.08em; font-weight: 850; }
+    .readiness-copy strong { display: block; font-size: .96rem; }
+    .readiness-copy span { display: block; margin-top: 3px; color: var(--muted-dark); font-size: .79rem; }
+    .readiness-meter { width: 150px; height: 7px; overflow: hidden; background: #2d3942; border-radius: 999px; }
+    .readiness-meter i { display: block; width: 82%; height: 100%; background: var(--lime); border-radius: inherit; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+    .metric { min-height: 111px; padding: 17px; background: var(--white); border: 1px solid var(--line); border-radius: 13px; }
+    .metric small { display: block; color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 17px; font-size: 1.1rem; letter-spacing: -.03em; }
+    .metric strong.accent { color: #56870f; font-size: 1.8rem; letter-spacing: -.08em; }
+
+    .dashboard-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 18px; }
+    .workspace-card { min-width: 0; padding: 25px; background: var(--white); border: 1px solid var(--line); border-radius: 15px; }
+    .workspace-card.dark { color: var(--white); background: var(--night); border-color: var(--night); }
+    .workspace-card.wide { grid-column: 1 / -1; }
+    .card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 21px; }
+    .card-heading h3 { margin: 0; font-size: 1.12rem; letter-spacing: -.045em; }
+    .card-heading span { color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .dark .card-heading span { color: var(--muted-dark); }
+    .summary { max-width: 690px; margin: 0; font-size: 1.18rem; line-height: 1.45; letter-spacing: -.025em; }
+    .summary-detail { max-width: 690px; margin: 11px 0 0; color: var(--muted); font-size: .89rem; }
+    .dark .summary-detail { color: var(--muted-dark); }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; }
+    .chip { padding: 5px 9px; color: #55790f; background: #e9f6c9; border-radius: 999px; font-size: .71rem; font-weight: 800; }
+    .repo-details { margin: 0; }
+    .repo-details div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: .82rem; }
+    .repo-details div:last-child { border-bottom: 0; }
+    .repo-details dt { color: var(--muted); }
+    .repo-details dd { margin: 0; font-weight: 800; text-align: right; }
+
+    .file-list, .path-list, .learning-list { margin: 0; padding: 0; list-style: none; }
+    .file-list li { display: grid; grid-template-columns: 30px 1fr auto; gap: 11px; align-items: start; padding: 13px 0; border-bottom: 1px solid var(--line); }
+    .file-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+    .file-index { color: var(--coral); font-size: .72rem; font-weight: 850; }
+    .file-path { display: block; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82rem; font-weight: 750; }
+    .file-reason { display: block; margin-top: 3px; color: var(--muted); font-family: inherit; font-size: .74rem; font-weight: 400; }
+    .file-arrow { color: var(--muted); font-size: 1.1rem; }
+    .path-list li { display: grid; grid-template-columns: 35px 1fr; gap: 11px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line-dark); }
+    .path-list li:last-child { border-bottom: 0; }
+    .path-step { display: grid; width: 26px; height: 26px; place-items: center; color: var(--ink); background: var(--lime); border-radius: 50%; font-size: .68rem; font-weight: 900; }
+    .path-list li span:last-child { color: #edf2ed; font-size: .88rem; }
+    .area-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; }
+    .area { padding: 15px; background: var(--paper-2); border-radius: 10px; }
+    .area b { display: block; font-size: .85rem; }
+    .area span { display: block; margin-top: 5px; color: var(--muted); font-size: .75rem; line-height: 1.4; }
+
+    .issue-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
+    .issue { padding: 16px; border: 1px solid var(--line); border-radius: 11px; }
+    .issue a { color: var(--ink); text-decoration: none; font-size: .87rem; font-weight: 800; }
+    .issue a:hover { color: var(--coral); }
+    .issue-meta { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 0; }
+    .issue-meta span { padding: 3px 6px; color: var(--muted); background: var(--paper-2); border-radius: 4px; font-size: .67rem; font-weight: 750; }
+    .issue p { margin: 10px 0 0; color: var(--muted); font-size: .75rem; }
+    .issue p strong { color: var(--ink); }
+    .learning-list { padding-left: 20px; list-style: disc; color: var(--muted); font-size: .85rem; }
+    .learning-list li { margin: 10px 0; padding-left: 3px; }
+
+    .ask-box { display: flex; gap: 8px; margin-top: 19px; }
+    .ask-box input { flex: 1; min-width: 0; min-height: 45px; padding: 0 13px; border: 1px solid var(--line-dark); border-radius: 8px; color: var(--white); background: var(--night-2); outline: 0; }
+    .ask-box input:focus { border-color: var(--lime); }
+    .ask-box button { padding: 0 16px; color: var(--ink); background: var(--lime); border: 0; border-radius: 8px; font-weight: 850; }
+    .answer { margin: 15px 0 0; color: var(--muted-dark); font-size: .84rem; white-space: pre-wrap; }
+    .empty { color: var(--muted); font-size: .84rem; }
+
+    footer { display: flex; justify-content: space-between; gap: 30px; padding: 35px 0 45px; color: var(--muted); border-top: 1px solid var(--line); font-size: .75rem; }
+    footer strong { color: var(--ink); }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; max-width: 720px; padding: 60px 0 70px; }
+      .hero h1 { max-width: 650px; }
+      .composer { max-width: 620px; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 650px) {
+      .shell { width: min(100% - 32px, 1240px); }
+      .topbar { padding: 18px 0; }
+      .nav a:not(.nav-cta) { display: none; }
+      .badge { display: none; }
+      h1 { font-size: clamp(3.2rem, 16vw, 5rem); }
+      .hero { padding: 48px 0 58px; }
+      .hero-actions { align-items: flex-start; flex-direction: column; gap: 14px; }
+      .manifesto { grid-template-columns: 1fr 1fr; gap: 23px 12px; }
+      .manifesto-intro { grid-column: 1 / -1; }
+      .field-row, .metric-grid, .issue-grid { grid-template-columns: 1fr 1fr; }
+      .readiness { grid-template-columns: auto 1fr; gap: 14px; }
+      .readiness-meter { grid-column: 1 / -1; width: 100%; }
+      .workspace-top { align-items: flex-start; flex-direction: column; }
+      .workspace-card { padding: 20px; }
+      .summary { font-size: 1.02rem; }
+      footer { align-items: flex-start; flex-direction: column; gap: 8px; }
+    }
+    @media (max-width: 430px) {
+      .field-row, .metric-grid, .issue-grid { grid-template-columns: 1fr; }
+      .composer { padding: 23px; }
+      .manifesto { grid-template-columns: 1fr; }
+      .manifesto-intro { grid-column: auto; }
+      .readiness { padding: 18px; }
+    }
   </style>
 </head>
 <body>
-  <header class="shell"><a class="brand" href="/">First<span>Commit</span></a><span class="badge">A clearer path into open source</span></header>
-  <main class="shell">
-    <section class="hero">
+  <header class="shell topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">01</span>
+      First<span>Commit</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a>
+      <a href="#results">Workspace</a>
+      <a class="nav-cta" href="#scan-form">Start exploring <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="shell hero">
       <div>
-        <div class="eyebrow">Repository onboarding, rethought</div>
-        <h1>Find your way into open source.</h1>
-        <p>FirstCommit studies a public GitHub repository and turns unfamiliar code into a personalized plan for understanding the project and making a first contribution.</p>
-      </div>
-      <form class="scan-card" id="scan-form">
-        <h2>Analyze a repository</h2>
-        <p class="hint">Start with any public GitHub URL. FirstCommit will map the important parts for you.</p>
-        <label for="repository_url">GitHub repository</label>
-        <input id="repository_url" name="repository_url" type="url" required placeholder="https://github.com/owner/repository">
-        <div class="row">
-          <div><label for="experience">Experience</label><select id="experience"><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select></div>
-          <div><label for="goal">Goal</label><select id="goal"><option>Understand the project</option><option selected>Make my first contribution</option><option>Find an issue</option><option>Learn the architecture</option></select></div>
+        <div class="eyebrow">Open source, made approachable</div>
+        <h1>Your first contribution starts with <em>a map.</em></h1>
+        <p class="hero-copy">FirstCommit turns an unfamiliar GitHub repository into a clear, personal path forward. Understand the project, find where you fit, and make your first move.</p>
+        <div class="hero-actions">
+          <a class="button button-dark" href="#scan-form">Analyze a repository <span aria-hidden="true">↗</span></a>
+          <a class="button button-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
         </div>
-        <button class="primary" id="scan-button" type="submit">Analyze repository</button>
-        <p class="error" id="form-error" hidden></p>
+        <div class="hero-note">
+          <span class="avatar-stack" aria-hidden="true"><i>JS</i><i>GO</i><i>AI</i></span>
+          Built for curious developers, wherever they are starting from.
+        </div>
+      </div>
+
+      <form class="composer" id="scan-form">
+        <div class="composer-head">
+          <div>
+            <div class="composer-kicker">Start here</div>
+            <h2>What would you like to understand?</h2>
+          </div>
+          <div class="step-count"><strong>01</strong> / 02</div>
+        </div>
+        <div class="field">
+          <label for="repository_url">Paste a public GitHub repository</label>
+          <input id="repository_url" name="repository_url" type="url" required placeholder="github.com/owner/repository">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="experience">I am</label>
+            <select id="experience">
+              <option>Beginner</option>
+              <option selected>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="goal">I want to</label>
+            <select id="goal">
+              <option>Understand the project</option>
+              <option selected>Make my first contribution</option>
+              <option>Find an issue</option>
+              <option>Learn the architecture</option>
+            </select>
+          </div>
+        </div>
+        <button class="composer-submit" id="scan-button" type="submit">Build my contributor map <span aria-hidden="true">↗</span></button>
+        <p class="form-error" id="form-error" hidden></p>
+        <p class="microcopy">Public repositories only · Your scan takes about a minute</p>
       </form>
     </section>
-    <section class="features" aria-label="FirstCommit capabilities">
-      <div class="feature"><b>Understand</b><span>Get the project explained in plain language.</span></div>
-      <div class="feature"><b>Navigate</b><span>Discover the files and paths that matter first.</span></div>
-      <div class="feature"><b>Match</b><span>Find issues that fit your current experience.</span></div>
-      <div class="feature"><b>Contribute</b><span>Follow a practical path toward your first PR.</span></div>
+
+    <section class="shell manifesto" id="how-it-works" aria-label="How FirstCommit works">
+      <div class="manifesto-intro"><strong>Less wandering.<br>More making.</strong>Three small steps to your first PR.</div>
+      <div class="manifesto-item"><span class="manifesto-number">01</span><div><strong>Understand</strong><span>Get the project in plain English.</span></div></div>
+      <div class="manifesto-item"><span class="manifesto-number">02</span><div><strong>Navigate</strong><span>See the files that matter first.</span></div></div>
+      <div class="manifesto-item"><span class="manifesto-number">03</span><div><strong>Contribute</strong><span>Find a place to make your mark.</span></div></div>
     </section>
-    <section id="results" hidden></section>
+
+    <section class="shell" id="results" hidden></section>
   </main>
-  <footer class="shell">FirstCommit uses repository evidence to make the first step smaller. Always verify recommendations against the project’s own documentation and maintainer guidance.</footer>
+
+  <footer class="shell">
+    <span><strong>FirstCommit</strong> · Make your way into open source.</span>
+    <span>Guidance grounded in the repository you are exploring.</span>
+  </footer>
+
   <script>
     const form = document.getElementById('scan-form');
     const button = document.getElementById('scan-button');
     const errorBox = document.getElementById('form-error');
     const results = document.getElementById('results');
     let currentAnalysis = null;
-    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-    const fileList = (items) => '<ul class="reading">' + (items || []).map(item => '<li>' + esc(item.path || item) + (item.reason ? '<span class="file-reason">' + esc(item.reason) + '</span>' : '') + '</li>').join('') + '</ul>';
-    const issueCards = (items) => (items || []).length ? items.map(issue => '<article class="issue"><a href="' + esc(issue.url) + '" target="_blank" rel="noreferrer">#' + esc(issue.number) + ' — ' + esc(issue.title) + '</a><div class="issue-meta"><span>' + esc(issue.difficulty) + '</span><span>' + esc(issue.estimated_scope) + ' scope</span><span>' + esc(issue.confidence) + ' confidence</span></div><p>' + esc(issue.explanation) + '</p><p><strong>Likely files:</strong> ' + esc((issue.files_likely || []).join(', ')) + '</p></article>').join('') : '<p class="plain">No open issues were returned. Check the repository directly for current maintainer priorities.</p>';
-    const simpleList = (items, className) => '<ul class="' + (className || '') + '">' + (items || []).map(item => '<li>' + esc(item) + '</li>').join('') + '</ul>';
+
+    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[char]));
+    const listFiles = (items) => '<ol class="file-list">' + (items || []).map((item, index) =>
+      '<li><span class="file-index">0' + (index + 1) + '</span><div><span class="file-path">' + esc(item.path || item) + '</span>' +
+      (item.reason ? '<span class="file-reason">' + esc(item.reason) + '</span>' : '') +
+      '</div><span class="file-arrow" aria-hidden="true">↗</span></li>'
+    ).join('') + '</ol>';
+    const listPath = (items) => '<ol class="path-list">' + (items || []).map((item, index) =>
+      '<li><span class="path-step">' + (index + 1) + '</span><span>' + esc(item) + '</span></li>'
+    ).join('') + '</ol>';
+    const listLearning = (items) => '<ul class="learning-list">' + (items || []).map(item => '<li>' + esc(item) + '</li>').join('') + '</ul>';
+    const areas = (items) => '<div class="area-grid">' + (items || []).map(area =>
+      '<div class="area"><b>' + esc(area.name) + '</b><span>' + esc(area.description) + '</span></div>'
+    ).join('') + '</div>';
+    const issues = (items) => (items || []).length ? '<div class="issue-grid">' + items.map(issue =>
+      '<article class="issue"><a href="' + esc(issue.url) + '" target="_blank" rel="noreferrer">#' + esc(issue.number) + ' · ' + esc(issue.title) + '</a>' +
+      '<div class="issue-meta"><span>' + esc(issue.difficulty) + '</span><span>' + esc(issue.estimated_scope) + ' scope</span><span>' + esc(issue.confidence) + ' confidence</span></div>' +
+      '<p>' + esc(issue.explanation) + '</p><p><strong>Likely files:</strong> ' + esc((issue.files_likely || []).join(', ')) + '</p></article>'
+    ).join('') + '</div>' : '<p class="empty">No open issues were returned. Check the repository directly for current maintainer priorities.</p>';
+
     function render(analysis) {
       const repo = analysis.repository || {};
+      const repoName = repo.name || 'Repository';
+      const languageChips = (repo.languages || []).map(language => '<span class="chip">' + esc(language) + '</span>').join('');
+      const repoLink = repo.url ? '<a href="' + esc(repo.url) + '" target="_blank" rel="noreferrer">' + esc(repoName) + ' ↗</a>' : esc(repoName);
+      const score = Number(analysis.readiness_score || 0);
       results.hidden = false;
-      results.innerHTML = '<div class="results-head"><div><div class="eyebrow">Your contributor workspace</div><h2>' + esc(repo.name || 'Repository') + '</h2><p>' + esc(repo.project_type || '') + ' · ' + esc(analysis.source || 'Repository scan') + '</p></div><button class="ghost" id="new-scan">New scan</button></div><div class="grid"><section class="panel overview"><div class="summary-block"><h3>What this project does</h3><p class="summary">' + esc(analysis.summary) + '</p><p class="plain">' + esc(analysis.plain_language) + '</p><div class="meta">' + (repo.languages || []).map(language => '<span class="chip">' + esc(language) + '</span>').join('') + '</div></div><div class="stat"><small>Primary language</small><strong>' + esc(repo.primary_language || '—') + '</strong></div><div class="stat"><small>Open issues</small><strong>' + esc(repo.open_issues ?? '—') + '</strong></div><div class="stat"><small>Readiness</small><strong class="score">' + esc(analysis.readiness_score || '—') + '%</strong></div></section><section class="panel"><h3>Architecture areas</h3><div class="architecture">' + (analysis.architecture || []).map(area => '<div class="area"><b>' + esc(area.name) + '</b><span>' + esc(area.description) + '</span></div>').join('') + '</div></section><section class="panel"><h3>Start here</h3>' + fileList(analysis.important_files) + '</section><section class="panel"><h3>Recommended issues</h3>' + issueCards(analysis.issues) + '</section><section class="panel"><h3>Your contribution path</h3><ol class="roadmap">' + (analysis.roadmap || []).map(step => '<li>' + esc(step) + '</li>').join('') + '</ol></section><section class="panel"><h3>Learn before contributing</h3>' + simpleList(analysis.learning_requirements, 'learning') + '<h3 style="margin-top:24px">Ask FirstCommit</h3><div class="ask"><input id="question" placeholder="Where should I start?" aria-label="Question about repository"><button id="ask-button" type="button">Ask</button></div><div class="answer" id="answer" role="status"></div></section></div>';
-      document.getElementById('new-scan').onclick = () => { results.hidden = true; window.scrollTo({top:0, behavior:'smooth'}); };
+      results.innerHTML =
+        '<div class="results-shell">' +
+          '<div class="workspace-top"><div><div class="eyebrow">Your contributor workspace</div><h2>' + esc(repoName) + '</h2><p>' + esc(repo.project_type || 'Open-source project') + ' · ' + esc(analysis.source || 'Repository scan') + ' · ' + repoLink + '</p></div><button class="new-scan" id="new-scan">← New scan</button></div>' +
+          '<nav class="workspace-nav" aria-label="Workspace sections"><a href="#overview">Overview</a><a href="#read-first">Read first</a><a href="#path">Your path</a><a href="#issues">Issues</a><a href="#ask">Ask FirstCommit</a></nav>' +
+          '<section class="readiness"><div class="readiness-score">' + esc(score) + '%</div><div class="readiness-copy"><strong>You are ready to start exploring.</strong><span>Based on the repository structure, available documentation, and your selected goal.</span></div><div class="readiness-meter" aria-label="' + esc(score) + '% readiness"><i style="width:' + Math.min(score, 100) + '%"></i></div></section>' +
+          '<div class="metric-grid"><div class="metric"><small>Primary language</small><strong>' + esc(repo.primary_language || 'Not specified') + '</strong></div><div class="metric"><small>Project type</small><strong>' + esc(repo.project_type || 'Open source') + '</strong></div><div class="metric"><small>Open issues</small><strong>' + esc(repo.open_issues ?? '—') + '</strong></div><div class="metric"><small>Good first move</small><strong class="accent">01</strong></div></div>' +
+          '<div class="dashboard-grid">' +
+            '<section class="workspace-card wide" id="overview"><div class="card-heading"><h3>Get the big picture</h3><span>01 · overview</span></div><p class="summary">' + esc(analysis.summary || 'This repository is ready to be explored.') + '</p><p class="summary-detail">' + esc(analysis.plain_language || 'Start with the documentation, follow one entry point, and use the tests to understand expected behavior.') + '</p><div class="chip-row">' + languageChips + '</div></section>' +
+            '<section class="workspace-card"><div class="card-heading"><h3>Repository profile</h3><span>At a glance</span></div><dl class="repo-details"><div><dt>Complexity</dt><dd>' + esc(repo.complexity || 'Intermediate') + '</dd></div><div><dt>Open issues</dt><dd>' + esc(repo.open_issues ?? '—') + '</dd></div><div><dt>License</dt><dd>' + esc(repo.license || 'Not specified') + '</dd></div><div><dt>Contribution guide</dt><dd>' + (repo.has_contributing ? 'Available ✓' : 'Look for one') + '</dd></div></dl></section>' +
+            '<section class="workspace-card" id="read-first"><div class="card-heading"><h3>Read these first</h3><span>Start here</span></div>' + listFiles(analysis.important_files) + '</section>' +
+            '<section class="workspace-card wide"><div class="card-heading"><h3>See the shape of the project</h3><span>Major areas</span></div>' + areas(analysis.architecture) + '</section>' +
+            '<section class="workspace-card dark" id="path"><div class="card-heading"><h3>Your contribution path</h3><span>One step at a time</span></div>' + listPath(analysis.roadmap) + '</section>' +
+            '<section class="workspace-card"><div class="card-heading"><h3>Learn before you contribute</h3><span>Keep it focused</span></div>' + listLearning(analysis.learning_requirements) + '</section>' +
+            '<section class="workspace-card wide" id="issues"><div class="card-heading"><h3>Issues worth a closer look</h3><span>Picked for you</span></div>' + issues(analysis.issues) + '</section>' +
+            '<section class="workspace-card dark wide" id="ask"><div class="card-heading"><h3>Ask FirstCommit</h3><span>Repository Q&A</span></div><p class="summary">Curious about something? Ask a question and keep exploring.</p><div class="ask-box"><input id="question" aria-label="Question about repository" placeholder="Where should I start?"><button id="ask-button" type="button">Ask ↗</button></div><div class="answer" id="answer" role="status"></div></section>' +
+          '</div>' +
+        '</div>';
+      document.getElementById('new-scan').onclick = () => {
+        results.hidden = true;
+        document.getElementById('repository_url').focus();
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      };
       document.getElementById('ask-button').onclick = ask;
       document.getElementById('question').onkeydown = (event) => { if (event.key === 'Enter') ask(); };
-      results.scrollIntoView({behavior:'smooth', block:'start'});
+      results.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
+
     async function ask() {
       const input = document.getElementById('question');
       const answer = document.getElementById('answer');
       if (!input.value.trim()) return;
-      answer.textContent = 'Thinking from the repository evidence…';
+      answer.textContent = 'Reading the repository map…';
       try {
-        const result = await fetch('/ask', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({question:input.value, analysis:currentAnalysis})});
+        const result = await fetch('/ask', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({question: input.value, analysis: currentAnalysis})
+        });
         const data = await result.json();
         if (!result.ok) throw new Error(data.error || 'Could not answer');
         answer.textContent = data.answer;
-      } catch (error) { answer.textContent = error.message; }
+      } catch (error) {
+        answer.textContent = error.message;
+      }
     }
+
     form.onsubmit = async (event) => {
       event.preventDefault();
       errorBox.hidden = true;
       button.disabled = true;
-      button.textContent = 'Scanning repository…';
+      button.textContent = 'Building your map…';
       results.hidden = true;
       try {
-        const result = await fetch('/scan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({repository_url:document.getElementById('repository_url').value, experience:document.getElementById('experience').value, goal:document.getElementById('goal').value})});
+        const result = await fetch('/scan', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            repository_url: document.getElementById('repository_url').value,
+            experience: document.getElementById('experience').value,
+            goal: document.getElementById('goal').value
+          })
+        });
         const data = await result.json();
         if (!result.ok) throw new Error(data.error || 'Scan failed');
         currentAnalysis = data;
@@ -100,7 +527,7 @@
         errorBox.hidden = false;
       } finally {
         button.disabled = false;
-        button.textContent = 'Analyze repository';
+        button.textContent = 'Build my contributor map ↗';
       }
     };
   </script>
