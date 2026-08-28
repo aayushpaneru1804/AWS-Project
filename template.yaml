@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FirstCommit - a serverless GitHub repository onboarding assistant.
+
+Globals:
+  Function:
+    Runtime: python3.12
+    MemorySize: 1024
+    Timeout: 30
+    Tracing: Active
+    Environment:
+      Variables:
+        SCANS_TABLE: !Ref ScansTable
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
+        ENABLE_BEDROCK: !Ref EnableBedrock
+
+Parameters:
+  BedrockModelId:
+    Type: String
+    Default: amazon.nova-lite-v1:0
+    Description: Bedrock model used for repository interpretation and Q&A.
+  EnableBedrock:
+    Type: String
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Default: 'true'
+    Description: Set false to use the deterministic scanner without model calls.
+
+Resources:
+  FirstCommitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.lambda_handler
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowCredentials: false
+          AllowHeaders:
+            - '*'
+          AllowMethods:
+            - GET
+            - POST
+          AllowOrigins:
+            - '*'
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ScansTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource: !Sub arn:${AWS::Partition}:bedrock:${AWS::Region}::foundation-model/${BedrockModelId}
+
+  ScansTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: scan_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: scan_id
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+
+Outputs:
+  FirstCommitUrl:
+    Description: Public FirstCommit web application URL.
+    Value: !GetAtt FirstCommitFunctionUrl.FunctionUrl
+  ScansTableName:
+    Description: DynamoDB table used to cache repository scans.
+    Value: !Ref ScansTable

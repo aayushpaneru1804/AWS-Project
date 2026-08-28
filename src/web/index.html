@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FirstCommit turns any public GitHub repository into a practical contributor roadmap.">
+  <title>FirstCommit — Find your way into open source</title>
+  <style>
+    :root{--ink:#102a43;--muted:#627d98;--line:#d9e2ec;--paper:#f7fafc;--card:#fff;--blue:#1769e0;--blue-dark:#0f4eb2;--green:#087f5b}
+    *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}button,input,select{font:inherit}button{cursor:pointer}.shell{width:min(1180px,calc(100% - 40px));margin:auto}
+    header{padding:24px 0;display:flex;align-items:center;justify-content:space-between}.brand{color:var(--ink);text-decoration:none;font-weight:850;letter-spacing:-.04em;font-size:1.35rem}.brand span{color:var(--blue)}.badge{color:var(--muted);font-size:.82rem}
+    .hero{padding:64px 0 42px;display:grid;grid-template-columns:1fr .9fr;gap:64px;align-items:center}.eyebrow{color:var(--blue);text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;font-weight:800}h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.07em;margin:14px 0 24px;max-width:680px}.hero p{color:var(--muted);font-size:1.14rem;max-width:570px}
+    .scan-card,.panel,.stat{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 15px 50px rgba(16,42,67,.07)}.scan-card{padding:28px}.scan-card h2{margin:0 0 7px;letter-spacing:-.03em}.scan-card .hint{color:var(--muted);font-size:.89rem;margin:0 0 24px}
+    label{display:block;color:var(--muted);font-weight:700;font-size:.78rem;margin:15px 0 7px}input,select{width:100%;border:1px solid #bcccdc;border-radius:10px;padding:12px 13px;color:var(--ink);background:#fff;outline:none}input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,105,224,.12)}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.primary{background:var(--blue);border:0;color:#fff;border-radius:10px;padding:13px 18px;font-weight:800;margin-top:20px;width:100%}.primary:hover{background:var(--blue-dark)}.primary:disabled{opacity:.6;cursor:wait}.error{color:#ba2525;font-size:.9rem;margin:12px 0 0}
+    .features{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:16px 0 62px}.feature{padding:20px 4px;border-top:2px solid var(--line)}.feature b{display:block;margin-bottom:4px}.feature span{color:var(--muted);font-size:.9rem}
+    #results{padding:10px 0 80px}.results-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:22px 0}.results-head h2{font-size:2rem;letter-spacing:-.05em;margin:0}.results-head p{color:var(--muted);margin:3px 0 0}.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:9px 13px;font-weight:700}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.panel{padding:24px}.panel h3{margin:0 0 14px;letter-spacing:-.03em}.overview{grid-column:1/-1;display:grid;grid-template-columns:1.45fr repeat(3,1fr);gap:20px;align-items:center}.summary{font-size:1.14rem;margin:0}.plain{color:var(--muted);margin:8px 0 0;font-size:.94rem}.stat{box-shadow:none;padding:16px;min-height:100px}.stat small{display:block;color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.09em;font-weight:800}.stat strong{display:block;font-size:1.15rem;margin-top:8px}.score{color:var(--green);font-size:2.2rem!important;letter-spacing:-.07em}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;border-radius:99px;background:#e6f6f1;color:var(--green);padding:4px 9px;font-size:.76rem;font-weight:800}
+    .architecture{display:flex;flex-wrap:wrap;gap:10px}.area{flex:1 1 130px;background:#f0f4f8;padding:15px;border-radius:12px}.area b{display:block}.area span{color:var(--muted);font-size:.82rem}.reading{list-style:none;padding:0;margin:0;counter-reset:read}.reading li{counter-increment:read;border-bottom:1px solid var(--line);padding:12px 0 12px 36px;position:relative;font-weight:700}.reading li:before{content:counter(read,decimal-leading-zero);position:absolute;left:0;color:var(--blue);font-size:.8rem}.file-reason{display:block;color:var(--muted);font-size:.8rem;font-weight:400}
+    .issue{border:1px solid var(--line);border-radius:13px;padding:16px;margin-bottom:10px}.issue:last-child{margin-bottom:0}.issue a{color:var(--ink);font-weight:800;text-decoration:none}.issue a:hover{color:var(--blue)}.issue-meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.issue-meta span{color:var(--muted);font-size:.75rem;background:#f0f4f8;border-radius:5px;padding:3px 6px}.issue p{color:var(--muted);font-size:.85rem;margin:7px 0 0}
+    .roadmap{margin:0;padding:0;list-style:none}.roadmap li{padding:13px 0 13px 35px;position:relative;border-left:2px solid #b8d3ff;margin-left:8px}.roadmap li:before{content:"";width:12px;height:12px;background:var(--blue);border:3px solid var(--paper);border-radius:50%;position:absolute;left:-8px;top:18px;box-shadow:0 0 0 1px var(--blue)}.learning{padding-left:20px;color:var(--muted)}.learning li{margin:8px 0}.ask{display:flex;gap:9px;margin-top:15px}.ask input{flex:1}.ask button{border:0;background:var(--ink);color:#fff;border-radius:9px;padding:0 15px;font-weight:800}.answer{margin-top:14px;color:var(--muted);white-space:pre-wrap}.loading{color:var(--muted);padding:30px 0}footer{color:var(--muted);padding:30px 0 50px;font-size:.85rem}
+    @media(max-width:850px){.hero,.grid{grid-template-columns:1fr;gap:24px}.overview{grid-template-columns:1fr 1fr}.overview .summary-block{grid-column:1/-1}.features{grid-template-columns:1fr 1fr}}@media(max-width:520px){.shell{width:min(100% - 28px,1180px)}.hero{padding-top:35px}.overview{grid-template-columns:1fr}.features,.row{grid-template-columns:1fr}.results-head{align-items:start;flex-direction:column}.ask{flex-direction:column}.ask button{padding:11px}}
+  </style>
+</head>
+<body>
+  <header class="shell"><a class="brand" href="/">First<span>Commit</span></a><span class="badge">A clearer path into open source</span></header>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Repository onboarding, rethought</div>
+        <h1>Find your way into open source.</h1>
+        <p>FirstCommit studies a public GitHub repository and turns unfamiliar code into a personalized plan for understanding the project and making a first contribution.</p>
+      </div>
+      <form class="scan-card" id="scan-form">
+        <h2>Analyze a repository</h2>
+        <p class="hint">Start with any public GitHub URL. FirstCommit will map the important parts for you.</p>
+        <label for="repository_url">GitHub repository</label>
+        <input id="repository_url" name="repository_url" type="url" required placeholder="https://github.com/owner/repository">
+        <div class="row">
+          <div><label for="experience">Experience</label><select id="experience"><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select></div>
+          <div><label for="goal">Goal</label><select id="goal"><option>Understand the project</option><option selected>Make my first contribution</option><option>Find an issue</option><option>Learn the architecture</option></select></div>
+        </div>
+        <button class="primary" id="scan-button" type="submit">Analyze repository</button>
+        <p class="error" id="form-error" hidden></p>
+      </form>
+    </section>
+    <section class="features" aria-label="FirstCommit capabilities">
+      <div class="feature"><b>Understand</b><span>Get the project explained in plain language.</span></div>
+      <div class="feature"><b>Navigate</b><span>Discover the files and paths that matter first.</span></div>
+      <div class="feature"><b>Match</b><span>Find issues that fit your current experience.</span></div>
+      <div class="feature"><b>Contribute</b><span>Follow a practical path toward your first PR.</span></div>
+    </section>
+    <section id="results" hidden></section>
+  </main>
+  <footer class="shell">FirstCommit uses repository evidence to make the first step smaller. Always verify recommendations against the project’s own documentation and maintainer guidance.</footer>
+  <script>
+    const form = document.getElementById('scan-form');
+    const button = document.getElementById('scan-button');
+    const errorBox = document.getElementById('form-error');
+    const results = document.getElementById('results');
+    let currentAnalysis = null;
+    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const fileList = (items) => '<ul class="reading">' + (items || []).map(item => '<li>' + esc(item.path || item) + (item.reason ? '<span class="file-reason">' + esc(item.reason) + '</span>' : '') + '</li>').join('') + '</ul>';
+    const issueCards = (items) => (items || []).length ? items.map(issue => '<article class="issue"><a href="' + esc(issue.url) + '" target="_blank" rel="noreferrer">#' + esc(issue.number) + ' — ' + esc(issue.title) + '</a><div class="issue-meta"><span>' + esc(issue.difficulty) + '</span><span>' + esc(issue.estimated_scope) + ' scope</span><span>' + esc(issue.confidence) + ' confidence</span></div><p>' + esc(issue.explanation) + '</p><p><strong>Likely files:</strong> ' + esc((issue.files_likely || []).join(', ')) + '</p></article>').join('') : '<p class="plain">No open issues were returned. Check the repository directly for current maintainer priorities.</p>';
+    const simpleList = (items, className) => '<ul class="' + (className || '') + '">' + (items || []).map(item => '<li>' + esc(item) + '</li>').join('') + '</ul>';
+    function render(analysis) {
+      const repo = analysis.repository || {};
+      results.hidden = false;
+      results.innerHTML = '<div class="results-head"><div><div class="eyebrow">Your contributor workspace</div><h2>' + esc(repo.name || 'Repository') + '</h2><p>' + esc(repo.project_type || '') + ' · ' + esc(analysis.source || 'Repository scan') + '</p></div><button class="ghost" id="new-scan">New scan</button></div><div class="grid"><section class="panel overview"><div class="summary-block"><h3>What this project does</h3><p class="summary">' + esc(analysis.summary) + '</p><p class="plain">' + esc(analysis.plain_language) + '</p><div class="meta">' + (repo.languages || []).map(language => '<span class="chip">' + esc(language) + '</span>').join('') + '</div></div><div class="stat"><small>Primary language</small><strong>' + esc(repo.primary_language || '—') + '</strong></div><div class="stat"><small>Open issues</small><strong>' + esc(repo.open_issues ?? '—') + '</strong></div><div class="stat"><small>Readiness</small><strong class="score">' + esc(analysis.readiness_score || '—') + '%</strong></div></section><section class="panel"><h3>Architecture areas</h3><div class="architecture">' + (analysis.architecture || []).map(area => '<div class="area"><b>' + esc(area.name) + '</b><span>' + esc(area.description) + '</span></div>').join('') + '</div></section><section class="panel"><h3>Start here</h3>' + fileList(analysis.important_files) + '</section><section class="panel"><h3>Recommended issues</h3>' + issueCards(analysis.issues) + '</section><section class="panel"><h3>Your contribution path</h3><ol class="roadmap">' + (analysis.roadmap || []).map(step => '<li>' + esc(step) + '</li>').join('') + '</ol></section><section class="panel"><h3>Learn before contributing</h3>' + simpleList(analysis.learning_requirements, 'learning') + '<h3 style="margin-top:24px">Ask FirstCommit</h3><div class="ask"><input id="question" placeholder="Where should I start?" aria-label="Question about repository"><button id="ask-button" type="button">Ask</button></div><div class="answer" id="answer" role="status"></div></section></div>';
+      document.getElementById('new-scan').onclick = () => { results.hidden = true; window.scrollTo({top:0, behavior:'smooth'}); };
+      document.getElementById('ask-button').onclick = ask;
+      document.getElementById('question').onkeydown = (event) => { if (event.key === 'Enter') ask(); };
+      results.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    async function ask() {
+      const input = document.getElementById('question');
+      const answer = document.getElementById('answer');
+      if (!input.value.trim()) return;
+      answer.textContent = 'Thinking from the repository evidence…';
+      try {
+        const result = await fetch('/ask', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({question:input.value, analysis:currentAnalysis})});
+        const data = await result.json();
+        if (!result.ok) throw new Error(data.error || 'Could not answer');
+        answer.textContent = data.answer;
+      } catch (error) { answer.textContent = error.message; }
+    }
+    form.onsubmit = async (event) => {
+      event.preventDefault();
+      errorBox.hidden = true;
+      button.disabled = true;
+      button.textContent = 'Scanning repository…';
+      results.hidden = true;
+      try {
+        const result = await fetch('/scan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({repository_url:document.getElementById('repository_url').value, experience:document.getElementById('experience').value, goal:document.getElementById('goal').value})});
+        const data = await result.json();
+        if (!result.ok) throw new Error(data.error || 'Scan failed');
+        currentAnalysis = data;
+        render(data);
+      } catch (error) {
+        errorBox.textContent = error.message;
+        errorBox.hidden = false;
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Analyze repository';
+      }
+    };
+  </script>
+</body>
+</html>
+
